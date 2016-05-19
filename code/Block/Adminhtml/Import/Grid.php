@@ -100,6 +100,12 @@ class BenDechrai_PackageProductManager_Block_Adminhtml_Import_Grid extends Mage_
       'confirm'  => Mage::helper('runautoparts_partsdb')->__('This will unapprove these packages. It will not remove any packages already added to the catalog. Are you sure?')
     ));
 
+    $this->getMassactionBlock()->addItem('Refresh', array(
+      'label'    => Mage::helper('runautoparts_partsdb')->__('Refresh'),
+      'url'      => $this->getUrl('*/*/massRefreshPackages'),
+      'confirm'  => Mage::helper('runautoparts_partsdb')->__('This will refresh the packages with data from the current catalog. The catalog will not be updated. Are you sure?')
+    ));
+
     return $this;
   }
 
