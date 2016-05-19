@@ -31,6 +31,7 @@ class BenDechrai_PackageProductManager_Block_Adminhtml_Import_Grid extends Mage_
           'header'    => Mage::helper('runautoparts_partsdb')->__('Associated Products'),
           'align'     => 'left',
           'index'     => 'associated_products',
+          'renderer'  => 'BenDechrai_PackageProductManager_Block_Adminhtml_Template_Grid_Renderer_AssociatedProducts',
       ));
 
       $this->addColumn('catalog_product_exists', array(
