@@ -2,7 +2,7 @@
 <layout version="0.1.0">
     <adminhtml_package_product_manager_index>
         <reference name="content">
-            <block type="bendechrai_packageproductmanager/adminhtml_import_list" name="packages" />
+            <block type="bendechrai_packageproductmanager/adminhtml_import_list" name="list" />
         </reference>
     </adminhtml_package_product_manager_index>
     <adminhtml_package_product_manager_import>
