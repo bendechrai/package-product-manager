@@ -29,7 +29,6 @@ class BenDechrai_PackageProductManager_Package_Product_ManagerController extends
       ->_addBreadcrumb($this->__('Package Product Manager'), $this->__('Package Product Manager'))
       ->_addBreadcrumb($this->__('Packages'), $this->__('Packages'))
       ->_addBreadcrumb($this->__('Import'), $this->__('Import'))
-      ->_addContent($this->getLayout()->createBlock('bendechrai_packageproductmanager/adminhtml_import_fileupload'))
       ->renderLayout();
   }
 

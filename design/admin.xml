@@ -5,5 +5,10 @@
             <block type="bendechrai_packageproductmanager/adminhtml_import_list" name="packages" />
         </reference>
     </adminhtml_package_product_manager_index>
+    <adminhtml_package_product_manager_import>
+        <reference name="content">
+            <block type="bendechrai_packageproductmanager/adminhtml_import_fileupload" name="fileupload" />
+        </reference>
+    </adminhtml_package_product_manager_import>
 </layout>
 
