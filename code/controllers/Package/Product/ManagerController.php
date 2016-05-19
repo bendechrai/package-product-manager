@@ -18,7 +18,8 @@ class BenDechrai_PackageProductManager_Package_Product_ManagerController extends
 
     // If POST request, handle submission
     if ($data = $this->getRequest()->getPost() && isset($_FILES['csvfile']) && is_array($_FILES['csvfile']) && isset($_FILES['csvfile']['tmp_name'])) {
-      $this->_importFromCsv($_FILES['csvfile']['tmp_name']);
+      $overwrite = ($this->getRequest()->getParam('overwrite') == 'overwrite');
+      $this->_importFromCsv($_FILES['csvfile']['tmp_name'], $overwrite);
     }
 
     $this->loadLayout()->_setActiveMenu('catalog/packageproductmanager');
@@ -37,9 +38,10 @@ class BenDechrai_PackageProductManager_Package_Product_ManagerController extends
    *
    * @access private
    * @param string $filename
+   * @param boolean $overwrite
    * @return void
    */
-  private function _importFromCsv($filename) {
+  private function _importFromCsv($filename, $overwrite=false) {
 
     if(($fh = fopen($filename, 'r')) !== false) {
 
@@ -81,12 +83,20 @@ class BenDechrai_PackageProductManager_Package_Product_ManagerController extends
       // Loop through rest of the file
       while(($row = fgetcsv($fh, 10000)) !== false) {
 
-        $sku = $row[$skuIndex];
-        $associatedProducts = $row[$associatedProductsIndex];
+        $sku = trim($row[$skuIndex]);
+        if($sku == '') continue;
+
+        $associatedProducts = trim($row[$associatedProductsIndex]);
         if(is_null($priceMultiplierIndex)) {
           $priceMultiplier = (float)1;
         } else {
-          $priceMultiplier = (float)$row[$priceMultiplierIndex];
+          $priceMultiplier = (float)trim($row[$priceMultiplierIndex]);
+        }
+
+        // Overwrite?
+        if($overwrite) {
+          $package->load($sku, 'sku');
+          $package->delete();
         }
 
         // Create the package
