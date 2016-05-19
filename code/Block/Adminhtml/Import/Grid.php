@@ -57,7 +57,7 @@ class BenDechrai_PackageProductManager_Block_Adminhtml_Import_Grid extends Mage_
       ));
 
       $this->addColumn('approved', array(
-          'header'    => Mage::helper('runautoparts_partsdb')->__('Status'),
+          'header'    => Mage::helper('runautoparts_partsdb')->__('Approved'),
           'align'     => 'center',
           'index'     => 'approved',
           'type'      => 'options',
@@ -68,7 +68,7 @@ class BenDechrai_PackageProductManager_Block_Adminhtml_Import_Grid extends Mage_
       ));
 
       $this->addColumn('listed', array(
-          'header'    => Mage::helper('runautoparts_partsdb')->__('Status'),
+          'header'    => Mage::helper('runautoparts_partsdb')->__('Listed'),
           'align'     => 'center',
           'index'     => 'listed',
           'type'      => 'options',
