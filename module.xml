@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <BenDechrai_PackageProductManager>
+            <active>true</active>
+            <codePool>community</codePool>
+            <depends>
+                <MageRevolution_PackageProductType/>
+            </depends>
+        </BenDechrai_PackageProductManager>
+    </modules>
+</config>
