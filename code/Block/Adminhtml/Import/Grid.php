@@ -33,6 +33,28 @@ class BenDechrai_PackageProductManager_Block_Adminhtml_Import_Grid extends Mage_
           'index'     => 'associated_products',
       ));
 
+      $this->addColumn('catalog_product_exists', array(
+          'header'    => Mage::helper('runautoparts_partsdb')->__('Catalog Product Exists?'),
+          'align'     => 'center',
+          'index'     => 'catalog_product_exists',
+          'type'      => 'options',
+          'options'   => array(
+            '0' => 'No',
+            '1' => 'Yes',
+          ),
+      ));
+
+      $this->addColumn('replace_existing', array(
+          'header'    => Mage::helper('runautoparts_partsdb')->__('Replace Existing?'),
+          'align'     => 'center',
+          'index'     => 'replace_existing',
+          'type'      => 'options',
+          'options'   => array(
+            '0' => 'No',
+            '1' => 'Yes',
+          ),
+      ));
+
       $this->addColumn('approved', array(
           'header'    => Mage::helper('runautoparts_partsdb')->__('Status'),
           'align'     => 'center',
