@@ -134,7 +134,6 @@ class BenDechrai_PackageProductManager_Package_Product_ManagerController extends
         // Try saving - might fail if duplicate sku
         try {
           $package->save();
-          $packagesCreated++;
 
           // Loop through product definitions
           foreach(explode(',', $associatedProducts) as $associatedProduct) {
@@ -145,6 +144,7 @@ class BenDechrai_PackageProductManager_Package_Product_ManagerController extends
             $associatedSku = trim($associatedSku);
 
             // Load product from catalog
+            $catalogProduct->unsetData();
             $catalogProduct->load($catalogProduct->getIdBySku($associatedSku));
             if($catalogProduct->getId()) {
 
@@ -155,11 +155,19 @@ class BenDechrai_PackageProductManager_Package_Product_ManagerController extends
               $packageProduct->setQty($associatedQty);
               $packageProduct->save();
 
+            } else {
+
+              Mage::getSingleton('adminhtml/session')->addError(sprintf(Mage::helper('bendechrai_packageproductmanager')->__('Could not find %s in catalog while setting up package product %s'), $associatedSku, $sku));
+              throw new Exception();
+
             }
 
           } // End loop through associated products
 
+          $packagesCreated++;
+
         } catch(Exception $e) {
+          $package->delete();
           Mage::getSingleton('adminhtml/session')->addError(sprintf(Mage::helper('bendechrai_packageproductmanager')->__('Could not create package with sku %s'), $sku));
         }
 
