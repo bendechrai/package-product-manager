@@ -109,4 +109,9 @@ class BenDechrai_PackageProductManager_Block_Adminhtml_Import_Grid extends Mage_
     return $this;
   }
 
+  public function getRowUrl($row)
+  {
+      return "javascript:$$('input[name=package_id][type=checkbox][value={$row->getId()}]')[0].click();";
+  }
+
 }
