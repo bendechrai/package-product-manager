@@ -36,6 +36,13 @@ class BenDechrai_PackageProductManager_Block_Adminhtml_Import_Grid extends Mage_
           'filter'    => false,
       ));
 
+      $this->addColumn('Attributes', array(
+          'header'    => Mage::helper('bendechrai_packageproductmanager')->__('Attributes'),
+          'align'     => 'left',
+          'index'     => 'attributes',
+          'renderer'  => 'BenDechrai_PackageProductManager_Block_Adminhtml_Template_Grid_Renderer_Attributes',
+      ));
+
       $this->addColumn('associated_products', array(
           'header'    => Mage::helper('bendechrai_packageproductmanager')->__('Associated Products'),
           'align'     => 'left',
