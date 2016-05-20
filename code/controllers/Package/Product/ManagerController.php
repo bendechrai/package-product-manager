@@ -33,6 +33,58 @@ class BenDechrai_PackageProductManager_Package_Product_ManagerController extends
       ->renderLayout();
   }
 
+  public function massApprovePackagesAction()
+  {
+    $packageIds = $this->getRequest()->getParam('package_id');
+    if(!is_array($packageIds)) {
+      Mage::getSingleton('adminhtml/session')->addError(Mage::helper('bendechrai_packageproductmanager')->__('Please select one or more packages.'));
+    } else {
+      try {
+        $packageModel = Mage::getModel('bendechrai_packageproductmanager/package');
+        foreach ($packageIds as $packageId) {
+          $packageModel->load($packageId);
+          $packageModel->setApproved(1);
+          $packageModel->save();
+        }
+        Mage::getSingleton('adminhtml/session')->addSuccess(
+          Mage::helper('bendechrai_packageproductmanager')->__(
+            'Total of %d packages(s) were approved.', count($packageIds)
+          )
+        );
+      } catch (Exception $e) {
+        Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+      }
+    }
+     
+    $this->_redirect('*/*/index');
+  }
+
+  public function massUnapprovePackagesAction()
+  {
+    $packageIds = $this->getRequest()->getParam('package_id');
+    if(!is_array($packageIds)) {
+      Mage::getSingleton('adminhtml/session')->addError(Mage::helper('bendechrai_packageproductmanager')->__('Please select one or more packages.'));
+    } else {
+      try {
+        $packageModel = Mage::getModel('bendechrai_packageproductmanager/package');
+        foreach ($packageIds as $packageId) {
+          $packageModel->load($packageId);
+          $packageModel->setApproved(0);
+          $packageModel->save();
+        }
+        Mage::getSingleton('adminhtml/session')->addSuccess(
+          Mage::helper('bendechrai_packageproductmanager')->__(
+            'Total of %d packages(s) were unapproved.', count($packageIds)
+          )
+        );
+      } catch (Exception $e) {
+        Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+      }
+    }
+     
+    $this->_redirect('*/*/index');
+  }
+
   public function massRefreshPackagesAction()
   {
     $packageIds = $this->getRequest()->getParam('package_id');
