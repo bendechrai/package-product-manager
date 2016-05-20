@@ -59,6 +59,7 @@ class BenDechrai_PackageProductManager_Block_Adminhtml_Import_Grid extends Mage_
             '0' => 'No',
             '1' => 'Yes',
           ),
+          'renderer'  => 'BenDechrai_PackageProductManager_Block_Adminhtml_Template_Grid_Renderer_CatalogProductExists',
       ));
 
       $this->addColumn('replace_existing', array(
