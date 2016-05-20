@@ -85,6 +85,58 @@ class BenDechrai_PackageProductManager_Package_Product_ManagerController extends
     $this->_redirect('*/*/index');
   }
 
+  public function massReplaceExistingPackagesAction()
+  {
+    $packageIds = $this->getRequest()->getParam('package_id');
+    if(!is_array($packageIds)) {
+      Mage::getSingleton('adminhtml/session')->addError(Mage::helper('bendechrai_packageproductmanager')->__('Please select one or more packages.'));
+    } else {
+      try {
+        $packageModel = Mage::getModel('bendechrai_packageproductmanager/package');
+        foreach ($packageIds as $packageId) {
+          $packageModel->load($packageId);
+          $packageModel->setReplaceExisting(1);
+          $packageModel->save();
+        }
+        Mage::getSingleton('adminhtml/session')->addSuccess(
+          Mage::helper('bendechrai_packageproductmanager')->__(
+            'Total of %d packages(s) marked as allowed to replace existing catalog products.', count($packageIds)
+          )
+        );
+      } catch (Exception $e) {
+        Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+      }
+    }
+     
+    $this->_redirect('*/*/index');
+  }
+
+  public function massDontReplaceExistingPackagesAction()
+  {
+    $packageIds = $this->getRequest()->getParam('package_id');
+    if(!is_array($packageIds)) {
+      Mage::getSingleton('adminhtml/session')->addError(Mage::helper('bendechrai_packageproductmanager')->__('Please select one or more packages.'));
+    } else {
+      try {
+        $packageModel = Mage::getModel('bendechrai_packageproductmanager/package');
+        foreach ($packageIds as $packageId) {
+          $packageModel->load($packageId);
+          $packageModel->setReplaceExisting(0);
+          $packageModel->save();
+        }
+        Mage::getSingleton('adminhtml/session')->addSuccess(
+          Mage::helper('bendechrai_packageproductmanager')->__(
+            'Total of %d packages(s) marked as not allowed to replace existing catalog products.', count($packageIds)
+          )
+        );
+      } catch (Exception $e) {
+        Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+      }
+    }
+     
+    $this->_redirect('*/*/index');
+  }
+
   public function massRefreshPackagesAction()
   {
     $packageIds = $this->getRequest()->getParam('package_id');

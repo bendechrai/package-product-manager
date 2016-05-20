@@ -117,6 +117,17 @@ class BenDechrai_PackageProductManager_Block_Adminhtml_Import_Grid extends Mage_
       'confirm'  => Mage::helper('bendechrai_packageproductmanager')->__('This will unapprove these packages. It will not remove any packages already added to the catalog. Are you sure?')
     ));
 
+    $this->getMassactionBlock()->addItem('Replace Existing', array(
+      'label'    => Mage::helper('bendechrai_packageproductmanager')->__('Replace Existing'),
+      'url'      => $this->getUrl('*/*/massReplaceExistingPackages'),
+      'confirm'  => Mage::helper('bendechrai_packageproductmanager')->__('The packages you\'ve selected will be able to replace existing products in the catalog, even if they are not the same actual item. Are you sure?')
+    ));
+
+    $this->getMassactionBlock()->addItem('Don\'t Replace Existing', array(
+      'label'    => Mage::helper('bendechrai_packageproductmanager')->__('Don\'t Replace Existing'),
+      'url'      => $this->getUrl('*/*/massDontReplaceExistingPackages'),
+    ));
+
     $this->getMassactionBlock()->addItem('Refresh', array(
       'label'    => Mage::helper('bendechrai_packageproductmanager')->__('Refresh'),
       'url'      => $this->getUrl('*/*/massRefreshPackages'),
