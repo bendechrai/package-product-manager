@@ -157,6 +157,16 @@ class BenDechrai_PackageProductManager_Package_Product_ManagerController extends
       $catalogProduct = Mage::GetModel('catalog/product');
       $packagesCreated = 0;
 
+      // Get list of product attributes
+      $productAttributes = array();
+      foreach (Mage::getResourceModel('catalog/product_attribute_collection') as $attr) {
+        $attr = $attr->getAttributeCode();
+        if(!in_array($attr, array('sku'))) {
+          $productAttributes[] = $attr;
+        }
+      }
+      unset($attr);
+
       // Loop through rest of the file
       while(($row = fgetcsv($fh, 10000)) !== false) {
 
@@ -170,6 +180,14 @@ class BenDechrai_PackageProductManager_Package_Product_ManagerController extends
           $priceMultiplier = (float)trim($row[$priceMultiplierIndex]);
         }
 
+        $attributes = array();
+        foreach($row as $key=>$value) {
+          $key = $firstRow[$key];
+          if(in_array($key, $productAttributes)) {
+            $attributes[$key] = $value;
+          }
+        }
+        
         // Overwrite?
         if($overwrite) {
           $package->load($sku, 'sku');
@@ -181,7 +199,7 @@ class BenDechrai_PackageProductManager_Package_Product_ManagerController extends
         $package->setSku($sku);
         $package->setAssociatedProducts($associatedProducts);
         $package->setPriceMultiplier($priceMultiplier);
-        $package->setAttributes(json_encode(array_combine($firstRow, $row)));
+        $package->setAttributes(json_encode($attributes));
 
         // Try saving - might fail if duplicate sku
         try {
