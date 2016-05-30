@@ -14,46 +14,53 @@ class BenDechrai_PackageProductManager_Model_Cron {
       $this->log[] = "Processing package with sku $sku";
 
       // Try and load existing catalog product. Not using helper attributes, to make sure we're getting absolute latest data.
-      // Check we're not loading a previously created package product, by comparing with MappedProductId.
       $existingCatalogProduct = Mage::GetModel('catalog/product')->load(Mage::GetModel('catalog/product')->getIdBySku($sku));
-      if($existingCatalogProduct->getId() && $existingCatalogProduct->getId() != $package->getMappedProductId()) {
+      if($existingCatalogProduct->getId()) {
 
-        $this->log[] = "- found existing product with id {$existingCatalogProduct->getId()}";
+        // Check we're not loading a previously created package product, by comparing with MappedProductId.
+        if($existingCatalogProduct->getId() == $package->getMappedProductId())) {
+          $existingCatalogProduct->unsetData();
 
-        // Double check we're allowed to replace it
-        if(!$package->getReplaceExisting()) {
-          $this->log[] = "- this packge can't replace existing products. Skipping.";
-          continue;
+        } else {
+
+          $this->log[] = "- found existing product with id {$existingCatalogProduct->getId()}";
+
+          // Double check we're allowed to replace it
+          if(!$package->getReplaceExisting()) {
+            $this->log[] = "- this packge can't replace existing products. Skipping.";
+            continue;
+          }
+
+          // Prepare to rename the SKU so we can use it. Skip if new SKU is already taken
+          $backupSku = substr($sku . '_bd_ppm_backup', 0, 64);
+          if(Mage::GetModel('catalog/product')->getIdBySku($backupSku)) {
+            $this->log[] = "- created backup sku $backupSku, but it's already in use. Skipping.";
+            continue;
+          }
+
+          // Prepare to rename the URL key. Skip if new URL already taken
+          $urlKey = $existingCatalogProduct->getUrlKey();
+          $backupUrlKey = $urlKey . '_bd_ppm_backup';
+          if(Mage::GetModel('catalog/product')->getCollection()->addAttributeToFilter('url_key', $backupUrlKey)->getFirstItem()->getId()) {
+            $this->log[] = "- created backup urlKey $backupUrlKey, but it's already in use. Skipping.";
+            continue;
+          }
+
+          // Do the renaming, now we know it's safe
+          $this->log[] = "- renaming catalog product from $sku to $backupSku";
+          $existingCatalogProduct->setSku($backupSku);
+
+          $this->log[] = "- renaming catalog url from $urlKey to $backupUrlKey (without permanent redirect)";
+          $existingCatalogProduct->setUrlKey($backupUrlKey);
+          $existingCatalogProduct->setData('save_rewrites_history', false);
+
+          $this->log[] = "- disabling this product";
+          $existingCatalogProduct->setStatus(2); // 1 = Enabled; 2 = Disabled
+
+          // Save changes to product, so URL and SKU can be reused.
+          $existingCatalogProduct->save();
+
         }
-
-        // Prepare to rename the SKU so we can use it. Skip if new SKU is already taken
-        $backupSku = substr($sku . '_bd_ppm_backup', 0, 64);
-        if(Mage::GetModel('catalog/product')->getIdBySku($backupSku)) {
-          $this->log[] = "- created backup sku $backupSku, but it's already in use. Skipping.";
-          continue;
-        }
-
-        // Prepare to rename the URL key. Skip if new URL already taken
-        $urlKey = $existingCatalogProduct->getUrlKey();
-        $backupUrlKey = $urlKey . '_bd_ppm_backup';
-        if(Mage::GetModel('catalog/product')->getCollection()->addAttributeToFilter('url_key', $backupUrlKey)->getFirstItem()->getId()) {
-          $this->log[] = "- created backup urlKey $backupUrlKey, but it's already in use. Skipping.";
-          continue;
-        }
-
-        // Do the renaming, now we know it's safe
-        $this->log[] = "- renaming catalog product from $sku to $backupSku";
-        $existingCatalogProduct->setSku($backupSku);
-
-        $this->log[] = "- renaming catalog url from $urlKey to $backupUrlKey (without permanent redirect)";
-        $existingCatalogProduct->setUrlKey($backupUrlKey);
-        $existingCatalogProduct->setData('save_rewrites_history', false);
-
-        $this->log[] = "- disabling this product";
-        $existingCatalogProduct->setStatus(2); // 1 = Enabled; 2 = Disabled
-
-        // Save changes to product, so URL and SKU can be reused.
-        $existingCatalogProduct->save();
 
       }
 
