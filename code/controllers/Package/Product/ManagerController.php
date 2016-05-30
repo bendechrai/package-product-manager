@@ -177,7 +177,7 @@ class BenDechrai_PackageProductManager_Package_Product_ManagerController extends
         }
         Mage::getSingleton('adminhtml/session')->addSuccess(
           Mage::helper('bendechrai_packageproductmanager')->__(
-            'Total of %d packages(s) were refreshed.', count($packageIds)
+            'Total of %d packages(s) were relisted.', count($packageIds)
           )
         );
       } catch (Exception $e) {
