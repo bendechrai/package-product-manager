@@ -40,5 +40,11 @@ class BenDechrai_PackageProductManager_Model_Package extends Mage_Core_Model_Abs
     return $total * $this->getPriceMultiplier();
   }
 
+  public function getProducts() {
+    return Mage::GetModel('bendechrai_packageproductmanager/product')
+      ->getCollection()
+      ->addFieldToFilter('package_id', $this->getPackageId());
+  }
+
 }
 

@@ -7,11 +7,7 @@ class BenDechrai_PackageProductManager_Block_Adminhtml_Template_Grid_Renderer_As
   {
     $out = '';
 
-    $products = Mage::GetModel('bendechrai_packageproductmanager/product')
-      ->getCollection()
-      ->addFieldToFilter('package_id', $row->getPackageId());
-
-    foreach($products as $product) {
+    foreach($row->getProducts() as $product) {
       $out .= "
         <div class=\"bd-ppm-grid-product\">
           {$product->getQty()}
