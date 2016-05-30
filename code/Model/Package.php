@@ -13,5 +13,27 @@ class BenDechrai_PackageProductManager_Model_Package extends Mage_Core_Model_Abs
     return parent::save();
   }
 
+  public function getCatalogProduct()
+  {
+    if(is_null($this->catalogProduct)) {
+      $this->catalogProduct = Mage::GetModel('catalog/product')->load($this->getMappedProductId());
+    }
+    return $this->catalogProduct;
+  }
+
+  public function getPrice() {
+
+    $products = Mage::GetModel('bendechrai_packageproductmanager/product')
+      ->getCollection()
+      ->addFieldToFilter('package_id', $this->getPackageId());
+
+    $total = 0;
+    foreach($products as $product) {
+      $total += $product->getQty() * $product->getCatalogProduct()->getPrice();
+    }
+
+    return $total * $this->getPriceMultiplier();
+  }
+
 }
 

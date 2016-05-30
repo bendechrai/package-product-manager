@@ -51,6 +51,13 @@ class BenDechrai_PackageProductManager_Block_Adminhtml_Import_Grid extends Mage_
           'renderer'  => 'BenDechrai_PackageProductManager_Block_Adminhtml_Template_Grid_Renderer_AssociatedProducts',
       ));
 
+      $this->addColumn('Price', array(
+          'header'    => Mage::helper('bendechrai_packageproductmanager')->__('Price'),
+          'align'     => 'left',
+          'index'     => 'price_multiplier',
+          'renderer'  => 'BenDechrai_PackageProductManager_Block_Adminhtml_Template_Grid_Renderer_Price',
+      ));
+
       $this->addColumn('catalog_product_exists', array(
           'header'    => Mage::helper('bendechrai_packageproductmanager')->__('Catalog Product Exists?'),
           'align'     => 'center',
