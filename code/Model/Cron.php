@@ -93,7 +93,7 @@ class BenDechrai_PackageProductManager_Model_Cron {
 
       // Set type as package product
       $this->log[] = "- Setting type to 'package'";
-      $catalogProduct->setTypeId('package');
+      $catalogProduct->setTypeId(MageRevolution_PackageProductType_Model_Product_Type_Package::TYPE_CODE);
  
       // Set sku
       $this->log[] = "- Setting sku to $sku";
