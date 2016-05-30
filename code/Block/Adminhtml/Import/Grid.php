@@ -113,6 +113,12 @@ class BenDechrai_PackageProductManager_Block_Adminhtml_Import_Grid extends Mage_
     $this->setMassactionIdField('package_id');
     $this->getMassactionBlock()->setFormFieldName('package_id');
 
+    $this->getMassactionBlock()->addItem('Relist', array(
+      'label'    => Mage::helper('bendechrai_packageproductmanager')->__('Relist'),
+      'url'      => $this->getUrl('*/*/massRelistPackages'),
+      'confirm'  => Mage::helper('bendechrai_packageproductmanager')->__('This will mark these packages as unlisted, so they are updated during the next scheduled task. Are you sure?')
+    ));
+
     $this->getMassactionBlock()->addItem('Approve', array(
       'label'    => Mage::helper('bendechrai_packageproductmanager')->__('Approve'),
       'url'      => $this->getUrl('*/*/massApprovePackages'),
