@@ -123,6 +123,19 @@ class BenDechrai_PackageProductManager_Model_Cron {
 
       }
 
+      // Add associated products
+      $linkdata = array();
+      foreach($package->getProducts() as $packageProduct) {
+
+        // Append to link data
+        $linkdata[$packageProduct->getCatalogProductEntityId()] = array(
+          'position'    => 0,
+          'package_qty' => $packageProduct->getQty(),
+        );
+
+      }
+      $catalogProduct->setPackageLinkData($linkdata);
+
       try {
 
         // Try saving the new product
