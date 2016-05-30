@@ -17,12 +17,15 @@ class BenDechrai_PackageProductManager_Model_Cron {
       $existingCatalogProduct = Mage::GetModel('catalog/product')->load(Mage::GetModel('catalog/product')->getIdBySku($sku));
       if($existingCatalogProduct->getId()) {
 
-        // Check we're not loading a previously created package product, by comparing with MappedProductId.
-        if($existingCatalogProduct->getId() == $package->getMappedProductId())) {
+        // Did we find the mapped product?
+        if($existingCatalogProduct->getId() == $package->getMappedProductId()) {
+
+          // Forget it - we're about to update that product...
           $existingCatalogProduct->unsetData();
 
         } else {
 
+          // Another existing product was found
           $this->log[] = "- found existing product with id {$existingCatalogProduct->getId()}";
 
           // Double check we're allowed to replace it
