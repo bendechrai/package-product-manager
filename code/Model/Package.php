@@ -9,8 +9,12 @@ class BenDechrai_PackageProductManager_Model_Package extends Mage_Core_Model_Abs
 
   public function save()
   {
-    $this->setCatalogProductExists((intval(Mage::GetModel('catalog/product')->getIdBySku($this->getSku())) > 0));
+
+    $existingProductId = intval(Mage::GetModel('catalog/product')->getIdBySku($this->getSku()));
+    $this->setCatalogProductExists($existingProductId > 0 && $existingProductId != $this->getMappedProductId());
+
     if(!$this->getMappedProductId()) $this->setListed(0);
+
     return parent::save();
   }
 
