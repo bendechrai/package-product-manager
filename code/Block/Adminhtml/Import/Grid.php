@@ -1,4 +1,11 @@
 <?php
+/**
+ * BenDechrai_PackageProductManager extension
+ * @category   BenDechrai
+ * @package    BenDechrai_PackageProductManager
+ * @copyright  Ben Dechrai
+ * @author     Ben Dechrai <ben@dechrai.com> https://bendechrai.com.
+ */
 
 class BenDechrai_PackageProductManager_Block_Adminhtml_Import_Grid extends Mage_Adminhtml_Block_Widget_Grid
 {
@@ -151,7 +158,8 @@ class BenDechrai_PackageProductManager_Block_Adminhtml_Import_Grid extends Mage_
 
   public function getRowUrl($row)
   {
-      return "javascript:$$('input[name=package_id][type=checkbox][value={$row->getId()}]')[0].click();";
+    // Row click toggles mass action checkbox
+    return "javascript:$$('input[name=package_id][type=checkbox][value={$row->getId()}]')[0].click();";
   }
 
 }
