@@ -25,6 +25,7 @@ class BenDechrai_PackageProductManager_Block_Adminhtml_Import_Grid extends Mage_
           'header'    => Mage::helper('bendechrai_packageproductmanager')->__('SKU'),
           'align'     => 'left',
           'index'     => 'sku',
+          'renderer'  => 'BenDechrai_PackageProductManager_Block_Adminhtml_Template_Grid_Renderer_Sku',
       ));
 
       $this->addColumn('image', array(
