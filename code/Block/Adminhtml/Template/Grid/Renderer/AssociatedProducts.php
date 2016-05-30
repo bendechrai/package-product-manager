@@ -24,16 +24,14 @@ class BenDechrai_PackageProductManager_Block_Adminhtml_Template_Grid_Renderer_As
     $out = '';
 
     foreach($row->getProducts() as $product) {
-      $out .= "
-        <div class=\"bd-ppm-grid-product\">
-          {$product->getQty()}
-          x
-          <a href=\"{$this->getUrl('*/catalog_product/edit', array('id'=>$product->getCatalogProduct()->getId()))}\"
-            title=\"{$product->getCatalogProduct()->getName()}\">{$product->getCatalogProduct()->getName()}</a>
-          @
-          $" . sprintf("%0.2f", $product->getCatalogProduct()->getPrice()) . "
-        </div>
-      ";
+
+      $href = $this->getUrl('*/catalog_product/edit', array('id'=>$product->getCatalogProduct()->getId()));
+      $title = $product->getCatalogProduct()->getName();
+      $qty = $product->getQty();
+      $price = Mage::helper('core')->currency($product->getCatalogProduct()->getPrice(), true, false);
+
+      $out .= "<div><a href=\"{$href}\" title=\"{$title}\">{$title}</a> ({$qty} @ {$price})</div>";
+
     }
 
     return $out;
