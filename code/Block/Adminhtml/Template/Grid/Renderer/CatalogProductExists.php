@@ -21,9 +21,9 @@ class BenDechrai_PackageProductManager_Block_Adminhtml_Template_Grid_Renderer_Ca
   {
     if($row->getCatalogProductExists()) {
       $product_id = Mage::GetModel('catalog/product')->getIdBySku($row->getSku());
-      return 'Yes (<a href="'.$this->getUrl('*/catalog_product/edit', array('id'=>$product_id)).'">'.$product_id.'</a>)';
+      return Mage::helper('bendechrai_packageproductmanager')->__("Yes") . ' (<a href="'.$this->getUrl('*/catalog_product/edit', array('id'=>$product_id)).'">'.$product_id.'</a>)';
     } else {
-      return 'No';
+      return Mage::helper('bendechrai_packageproductmanager')->__("No");
     }
   }
 }

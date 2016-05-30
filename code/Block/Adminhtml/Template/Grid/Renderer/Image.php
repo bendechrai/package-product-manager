@@ -20,7 +20,7 @@ class BenDechrai_PackageProductManager_Block_Adminhtml_Template_Grid_Renderer_Im
   public function render(Varien_Object $row)
   {
     if(is_null($row->imageurl)) {
-          return "No image available";
+      return Mage::helper('bendechrai_packageproductmanager')->__("No image available");
     } else {
       return "<img src=". $row->imageurl ." width='97px'/>";
     }
