@@ -28,14 +28,14 @@ class BenDechrai_PackageProductManager_Block_Adminhtml_Import_Grid extends Mage_
           'renderer'  => 'BenDechrai_PackageProductManager_Block_Adminhtml_Template_Grid_Renderer_Sku',
       ));
 
-      $this->addColumn('image', array(
-          'header'    => Mage::helper('bendechrai_packageproductmanager')->__('Image'),
-          'align'     => 'center',
-          'index'     => 'image',
-          'width'     => '97',
-          'renderer'  => 'BenDechrai_PackageProductManager_Block_Adminhtml_Template_Grid_Renderer_Image',
-          'filter'    => false,
-      ));
+//      $this->addColumn('image', array(
+//          'header'    => Mage::helper('bendechrai_packageproductmanager')->__('Image'),
+//          'align'     => 'center',
+//          'index'     => 'image',
+//          'width'     => '97',
+//          'renderer'  => 'BenDechrai_PackageProductManager_Block_Adminhtml_Template_Grid_Renderer_Image',
+//          'filter'    => false,
+//      ));
 
       $this->addColumn('Attributes', array(
           'header'    => Mage::helper('bendechrai_packageproductmanager')->__('Attributes'),
