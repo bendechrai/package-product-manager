@@ -117,6 +117,10 @@ class BenDechrai_PackageProductManager_Model_Cron {
         'manage_stock'=>0
       ));
 
+      // ======
+      // IMAGES
+      // ======
+
       // Get details from existing product
       if($existingCatalogProduct->getId()) {
 
@@ -124,7 +128,7 @@ class BenDechrai_PackageProductManager_Model_Cron {
         $catalogProduct->setUrlKey($urlKey);
 
         foreach($existingCatalogProduct->getMediaGalleryImages() as $image) {
-          $this->log[] = "- Adding image {$image->getPath()}";
+          $this->log[] = "- Adding image {$image->getPath()} from existing product {$existingCatalogProduct->getId()}";
           try {
             $catalogProduct->addImageToMediaGallery($image->getPath(), array('image', 'small_image', 'thumbnail'), false, false);
           } catch(Exception $e) {
@@ -134,9 +138,31 @@ class BenDechrai_PackageProductManager_Model_Cron {
 
       }
 
+      // Does this product have any images now?
+      $imageCount = count($catalogProduct->getMediaGalleryImages());
+      $defaultImageSet = false;
+
       // Add associated products
       $linkdata = array();
       foreach($package->getProducts() as $packageProduct) {
+
+        // If this product has no images yet, add these associated products' immages
+        if($imageCount == 0) {
+          $childProduct = Mage::GetModel('catalog/product')->load($packageProduct->getCatalogProductEntityId());
+          foreach($childProduct->getMediaGalleryImages() as $image) {
+            $this->log[] = "- Adding image {$image->getPath()} from child product {$childProduct->getId()}";
+            try {
+              if(!$defaultImageSet) {
+                $catalogProduct->addImageToMediaGallery($image->getPath(), array('image', 'small_image', 'thumbnail'), false, false);
+                $defaultImageSet = true;
+              } else {
+                $catalogProduct->addImageToMediaGallery($image->getPath(), array(), false, false);
+              }
+            } catch(Exception $e) {
+              $this->log[] = "-- Couldn't add image";
+            }
+          }
+        }
 
         // Append to link data
         $linkdata[$packageProduct->getCatalogProductEntityId()] = array(
