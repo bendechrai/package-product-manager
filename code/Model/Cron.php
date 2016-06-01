@@ -111,8 +111,11 @@ class BenDechrai_PackageProductManager_Model_Cron {
       $this->log[] = "- Setting price to " . $package->getPrice();
       $catalogProduct->setPrice($package->getPrice());
 
-      // Use store configured stock management process
-      $catalogProduct->setData('stock_data',array('use_config_manage_stock' => 1));
+      // Use disable stock control
+      $catalogProduct->setData('stock_data',array(
+        'use_config_manage_stock'=>0,
+        'manage_stock'=>0
+      ));
 
       // Get details from existing product
       if($existingCatalogProduct->getId()) {
