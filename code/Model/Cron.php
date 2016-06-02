@@ -188,6 +188,10 @@ class BenDechrai_PackageProductManager_Model_Cron {
         $this->log[] = "Error saving product during listing: " . $e->getMessage();
       }
 
+      // Reload and resave, to make sure package product pre save hooks work
+      $catalogProduct->load($catalogProduct->getId());
+      $catalogProduct->save();
+
     }
 
     return implode("\n", $this->log);
