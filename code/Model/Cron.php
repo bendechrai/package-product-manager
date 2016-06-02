@@ -84,27 +84,6 @@ class BenDechrai_PackageProductManager_Model_Cron {
         $catalogProduct = Mage::GetModel('catalog/product');
       }
 
-      // Add associated products
-      $linkdata = array();
-      foreach($package->getProducts() as $packageProduct) {
-
-        // Append to link data
-        $linkdata[$packageProduct->getCatalogProductEntityId()] = array(
-          'position'    => 0,
-          'package_qty' => $packageProduct->getQty(),
-        );
-
-      }
-      $catalogProduct->setPackageLinkData($linkdata);
-
-      // Save now, to store associated products. This ensures SaveBefore events get this in the next call.
-      try {
-        $catalogProduct->save();
-      } catch(Exception $e) {
-        $this->log[] = "Error saving product during listing (1): " . $e->getMessage();
-      }
-
-
       // Set defaults for this product, that can be overridden by the package
       $catalogProduct->setTaxClassId(2);        // 2 = Taxable Goods
       $catalogProduct->setAttributeSetId(4);    // 4 = Default Set
@@ -163,10 +142,12 @@ class BenDechrai_PackageProductManager_Model_Cron {
       $imageCount = count($catalogProduct->getMediaGalleryImages());
       $defaultImageSet = false;
 
-      // If this product has no images yet, add these associated products' images
-      if($imageCount == 0) {
-        foreach($package->getProducts() as $packageProduct) {
+      // Add associated products
+      $linkdata = array();
+      foreach($package->getProducts() as $packageProduct) {
 
+        // If this product has no images yet, add these associated products' immages
+        if($imageCount == 0) {
           $childProduct = Mage::GetModel('catalog/product')->load($packageProduct->getCatalogProductEntityId());
           foreach($childProduct->getMediaGalleryImages() as $image) {
             $this->log[] = "- Adding image {$image->getPath()} from child product {$childProduct->getId()}";
@@ -182,7 +163,15 @@ class BenDechrai_PackageProductManager_Model_Cron {
             }
           }
         }
+
+        // Append to link data
+        $linkdata[$packageProduct->getCatalogProductEntityId()] = array(
+          'position'    => 0,
+          'package_qty' => $packageProduct->getQty(),
+        );
+
       }
+      $catalogProduct->setPackageLinkData($linkdata);
 
       try {
 
@@ -196,12 +185,8 @@ class BenDechrai_PackageProductManager_Model_Cron {
         $package->save();
 
       } catch(Exception $e) {
-        $this->log[] = "Error saving product during listing (2): " . $e->getMessage();
+        $this->log[] = "Error saving product during listing: " . $e->getMessage();
       }
-
-      // Reload and resave, to make sure package product pre save hooks work
-      $catalogProduct->load($catalogProduct->getId());
-      $catalogProduct->save();
 
     }
 
