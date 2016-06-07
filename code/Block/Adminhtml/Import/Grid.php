@@ -153,6 +153,12 @@ class BenDechrai_PackageProductManager_Block_Adminhtml_Import_Grid extends Mage_
       'url'      => $this->getUrl('*/*/massRefreshPackages'),
     ));
 
+    $this->getMassactionBlock()->addItem('Delete', array(
+      'label'    => Mage::helper('bendechrai_packageproductmanager')->__('Delete'),
+      'url'      => $this->getUrl('*/*/massDeletePackages'),
+      'confirm'  => Mage::helper('bendechrai_packageproductmanager')->__('You are deleting package products from the maganer. This will *NOT* delete products from the catalog. Continue?')
+    ));
+
     return $this;
   }
 

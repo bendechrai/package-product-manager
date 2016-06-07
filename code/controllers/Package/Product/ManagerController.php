@@ -196,4 +196,47 @@ class BenDechrai_PackageProductManager_Package_Product_ManagerController extends
     $this->_redirect('*/*/index');
   }
 
+  public function massDeletePackagesAction()
+  {
+    $packageIds = $this->getRequest()->getParam('package_id');
+    if(!is_array($packageIds)) {
+      Mage::getSingleton('adminhtml/session')->addError(Mage::helper('bendechrai_packageproductmanager')->__('Please select one or more packages.'));
+    } else {
+      try {
+        $packageModel = Mage::getModel('bendechrai_packageproductmanager/package');
+        $deletedCount = 0;
+        foreach ($packageIds as $packageId) {
+          $packageModel->load($packageId);
+
+          if(intval($packageModel->getMappedProductId()) > 0) {
+            Mage::getSingleton('adminhtml/session')->addError("Product {$packageModel->getSku()} not deleted, because it exists in the catalog");
+            continue;
+          }
+
+          if($packageModel->getApproved()) {
+            Mage::getSingleton('adminhtml/session')->addError("Product {$packageModel->getSku()} not deleted, because it's approved for listing");
+            continue;
+          }
+
+          if($packageModel->getListed()) {
+            Mage::getSingleton('adminhtml/session')->addError("Product {$packageModel->getSku()} not deleted, because it's marked as listed");
+            continue;
+          }
+
+          if($packageModel->delete()) $deletedCount++;
+          
+        }
+
+        if($deletedCount>0) {
+          Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('bendechrai_packageproductmanager')->__('Total of %d packages(s) were deleted.', $deletedCount));
+        }
+
+      } catch (Exception $e) {
+        Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+      }
+    }
+     
+    $this->_redirect('*/*/index');
+  }
+
 }
