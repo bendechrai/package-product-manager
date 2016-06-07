@@ -60,7 +60,7 @@ class BenDechrai_PackageProductManager_Block_Adminhtml_Import_Grid extends Mage_
 
       $this->addColumn('Price', array(
           'header'    => Mage::helper('bendechrai_packageproductmanager')->__('Price'),
-          'align'     => 'left',
+          'align'     => 'right',
           'index'     => 'price_multiplier',
           'renderer'  => 'BenDechrai_PackageProductManager_Block_Adminhtml_Template_Grid_Renderer_Price',
       ));

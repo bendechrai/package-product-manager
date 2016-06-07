@@ -23,13 +23,15 @@ class BenDechrai_PackageProductManager_Block_Adminhtml_Template_Grid_Renderer_Pr
     $total = 0;
 
     foreach($row->getProducts() as $product) {
-      $out .= "<div>+" . Mage::helper('core')->currency($product->getQty() * $product->getCatalogProduct()->getPrice(), true, false) . "</div>";
+      $out .= "<div>" . Mage::helper('core')->currency($product->getQty() * $product->getCatalogProduct()->getPrice(), true, false) . "</div>";
       $total += $product->getQty() * $product->getCatalogProduct()->getPrice();
     }
 
-    $out .= "<div>=" . Mage::helper('core')->currency($total, true, false) . "</div>";
-    $out .= "<div>@" . Mage::helper('core')->currency($row->getPriceMultiplier()*100, true, false) . "</div>";
-    $out .= "<div>=" . Mage::helper('core')->currency($total * $row->getPriceMultiplier(), true, false) . "</div>";
+    $out .= "<hr/>";
+    $out .= "<div>" . Mage::helper('core')->currency($total, true, false) . "</div>";
+    $out .= "<div>" . ($row->getPriceMultiplier()*100) . "%</div>";
+    $out .= "<hr/>";
+    $out .= "<div>" . Mage::helper('core')->currency($total * $row->getPriceMultiplier(), true, false) . "</div>";
 
     return $out;
   }
