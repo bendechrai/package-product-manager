@@ -62,7 +62,7 @@ class BenDechrai_PackageProductManager_Block_Adminhtml_Import_Fileupload_Form ex
                 '<p>Finally, any remaining columns will be used if the column heading matches a product attributes code, such as <strong>name</strong>, <strong>description</strong>, <strong>short_description</strong>.</p>' .
                 '<p>Here is sample CSV:</p>' .
                 '<pre>sku,associated products,price multiplier,name,description,short_description' . "\n" . 
-                'dining_furniture,1@table,6@chair,0.8,"Dining Furniture","Buy a table and 6 chairs and get a 20% discount!","Table and six chairs"</pre>' . 
+                'dining_furniture,"1@table,6@chair",0.8,"Dining Furniture","Buy a table and 6 chairs and get a 20% discount!","Table and six chairs"</pre>' . 
                 '<h4>Overwrite</h4>' .
                 '<p>By default, a row in the CSV Import file will be ignored if the SKU exists in the Package Product definition already. If you tick this box, the Package Product definition will be deleted first. The new definition will be added unapproved and unlisted.</p>'
             ),
