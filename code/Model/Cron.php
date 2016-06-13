@@ -21,6 +21,13 @@ class BenDechrai_PackageProductManager_Model_Cron {
       $sku = $package->getSku();
       $this->log[] = "Processing package with sku $sku";
 
+      if(!$package->isComplete()) {
+        $this->log[] = "- package is incomplete. Skipping and unapproving";
+        $package->setApproved(0);
+        $package->save();
+        continue;
+      }
+
       // Try and load existing catalog product. Not using helper attributes, to make sure we're getting absolute latest data.
       $existingCatalogProduct = Mage::GetModel('catalog/product')->load(Mage::GetModel('catalog/product')->getIdBySku($sku));
       if($existingCatalogProduct->getId()) {

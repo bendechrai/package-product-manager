@@ -15,6 +15,13 @@ class BenDechrai_PackageProductManager_Model_Package extends Mage_Core_Model_Abs
     $this->_init('bendechrai_packageproductmanager/package');
   }
 
+  public function isComplete() {
+    if(trim($this->getSku())=='') return false;
+    if(trim($this->getAssociatedProducts())=='') return false;
+    if(trim($this->getCategoryIds())=='') return false;
+    return true;
+  }
+
   public function save()
   {
 
