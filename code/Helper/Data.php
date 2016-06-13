@@ -29,6 +29,7 @@ class BenDechrai_PackageProductManager_Helper_Data extends Mage_Core_Helper_Abst
         $skuIndex = null;
         $associatedProductsIndex = null;
         $priceMultiplierIndex = null;
+        $categoriesIndex = null;
         foreach($firstRow as $index=>$key) {
           $key = strtolower($key);
           if($key == 'sku') {
@@ -39,6 +40,9 @@ class BenDechrai_PackageProductManager_Helper_Data extends Mage_Core_Helper_Abst
           }
           if($key == 'price multiplier') {
             $priceMultiplierIndex = $index;
+          }
+          if($key == 'categories') {
+            $categoriesIndex = $index;
           }
         }
         if(is_null($skuIndex)) {
@@ -73,11 +77,16 @@ class BenDechrai_PackageProductManager_Helper_Data extends Mage_Core_Helper_Abst
         if($sku == '') continue;
 
         $associatedProducts = trim($row[$associatedProductsIndex]);
+
         if(is_null($priceMultiplierIndex)) {
           $priceMultiplier = (float)1;
         } else {
           $priceMultiplier = (float)trim($row[$priceMultiplierIndex]);
         }
+
+        $categoryIds = preg_replace('#[^0-9,]#', '', $row[$categoriesIndex]);
+        $categoryIds = preg_replace('#[,]+#', ',', $categoryIds);
+        $categoryIds = trim($categoryIds, ',');
 
         $attributes = array();
         foreach($row as $key=>$value) {
@@ -98,6 +107,7 @@ class BenDechrai_PackageProductManager_Helper_Data extends Mage_Core_Helper_Abst
         $package->setSku($sku);
         $package->setAssociatedProducts($associatedProducts);
         $package->setPriceMultiplier($priceMultiplier);
+        $package->setCategoryIds($categoryIds);
         $package->setAttributes(json_encode($attributes));
 
         // Try saving - might fail if duplicate sku

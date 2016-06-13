@@ -44,7 +44,7 @@ class BenDechrai_PackageProductManager_Block_Adminhtml_Import_Grid extends Mage_
 //          'filter'    => false,
 //      ));
 
-      $this->addColumn('Attributes', array(
+      $this->addColumn('attributes', array(
           'header'    => Mage::helper('bendechrai_packageproductmanager')->__('Attributes'),
           'align'     => 'left',
           'index'     => 'attributes',
@@ -58,7 +58,14 @@ class BenDechrai_PackageProductManager_Block_Adminhtml_Import_Grid extends Mage_
           'renderer'  => 'BenDechrai_PackageProductManager_Block_Adminhtml_Template_Grid_Renderer_AssociatedProducts',
       ));
 
-      $this->addColumn('Price', array(
+      $this->addColumn('categories', array(
+          'header'    => Mage::helper('bendechrai_packageproductmanager')->__('Categories'),
+          'align'     => 'left',
+          'index'     => 'category_ids',
+          'renderer'  => 'BenDechrai_PackageProductManager_Block_Adminhtml_Template_Grid_Renderer_Categories',
+      ));
+
+      $this->addColumn('price', array(
           'header'    => Mage::helper('bendechrai_packageproductmanager')->__('Price'),
           'align'     => 'right',
           'index'     => 'price_multiplier',
