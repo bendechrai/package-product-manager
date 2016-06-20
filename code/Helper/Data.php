@@ -59,6 +59,7 @@ class BenDechrai_PackageProductManager_Helper_Data extends Mage_Core_Helper_Abst
       $packageProduct = Mage::GetModel('bendechrai_packageproductmanager/product');
       $catalogProduct = Mage::GetModel('catalog/product');
       $packagesCreated = 0;
+      $packagesUpdated = 0;
 
       // Get list of product attributes
       $productAttributes = array();
@@ -95,15 +96,16 @@ class BenDechrai_PackageProductManager_Helper_Data extends Mage_Core_Helper_Abst
             $attributes[$key] = $value;
           }
         }
+
+        // Start with a new package
+        $package->unsetData();
         
-        // Overwrite?
+        // Overwrite? Load in details
         if($overwrite) {
           $package->load($sku, 'sku');
-          $package->delete();
         }
 
         // Create the package
-        $package->unsetData();
         $package->setSku($sku);
         $package->setAssociatedProducts($associatedProducts);
         $package->setPriceMultiplier($priceMultiplier);
@@ -113,6 +115,11 @@ class BenDechrai_PackageProductManager_Helper_Data extends Mage_Core_Helper_Abst
         // Try saving - might fail if duplicate sku
         try {
           $package->save();
+
+          // Delete existing associated products from database
+          foreach(Mage::GetModel('bendechrai_packageproductmanager/product')->getCollection()->addFieldToFilter('package_id', $package->getId()) as $packageProduct) {
+            $packageProduct->delete();
+          }
 
           // Loop through product definitions
           foreach(explode(',', $associatedProducts) as $associatedProduct) {
@@ -143,7 +150,11 @@ class BenDechrai_PackageProductManager_Helper_Data extends Mage_Core_Helper_Abst
 
           } // End loop through associated products
 
-          $packagesCreated++;
+          if($overwrite) {
+            $packagesUpdated++;
+          } else {
+            $packagesCreated++;
+          }
 
         } catch(Exception $e) {
           $package->delete();
@@ -152,8 +163,8 @@ class BenDechrai_PackageProductManager_Helper_Data extends Mage_Core_Helper_Abst
 
       } // End loop through rest of file
 
-      if($packagesCreated>0) {
-        Mage::getSingleton('adminhtml/session')->addSuccess(sprintf(Mage::helper('bendechrai_packageproductmanager')->__('Successfully added %d package(s) to the queue'), $packagesCreated));
+      if(($packagesUpdated + $packagesCreated) > 0) {
+        Mage::getSingleton('adminhtml/session')->addSuccess(sprintf(Mage::helper('bendechrai_packageproductmanager')->__('Successfully added %d, and updated %d package(s)'), $packagesCreated, $packagesUpdated));
       }
 
     } else {
