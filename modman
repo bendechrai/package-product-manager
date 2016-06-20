@@ -1,4 +1,5 @@
 code                   app/code/community/BenDechrai/PackageProductManager/
+design/admin           app/design/adminhtml/default/default/template/BenDechrai/PackageProductManager/
 design/admin.xml       app/design/adminhtml/default/default/layout/bendechrai_packageproductmanager.xml
 module.xml             app/etc/modules/BenDechrai_PackageProductManager.xml
 skin/adminhtml/images  skin/adminhtml/base/default/images/bendechrai/package-product-manager/

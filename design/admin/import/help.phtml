@@ -1,0 +1,17 @@
+<div id="block_notice_packageproductmanager" class="block_notices_module" title="<?php echo Mage::helper('bendechrai_packageproductmanager')->__('Package Product Manager Help'); ?>">
+  <?php echo Mage::helper('bendechrai_packageproductmanager')->__(
+    '<p>This page shows a list of Package Product definitions. You can import more definitions using the <strong>Import</strong> button, or select definitions to act on.</p>
+    <ul style="padding-left: 2em; margin-bottom: 1em;">
+      <li><strong>Relist</strong>: marks existing products as unlisted, so that the next schedued listing task will update the catalog products with the latest details.</li>
+      <li><strong>Approve</strong>: marks products approved for listing.</li>
+      <li><strong>Unapprove</strong>: marks products as not approved for listing.</li>
+      <li><strong>Replace Existing</strong>: if the defined SKU matches an existing catalog product, delete that product, and replace with this product.</li>
+      <li><strong>Don\'t Replace Existing</strong>: if the defined SKU matches an existing catalog product, don\'t replace it.</li>
+      <li><strong>Use Existing</strong>: if the defined SKU matches an existing catalog product, link this definition to that product, so it can be relisted and updated with the latest details.</li>
+      <li><strong>Refresh</strong>: checks the products to see if another product has the same SKU (existing product) or the mapped product no longer exists (manually deleted from the catalog).</li>
+      <li><strong>Delete</strong>: removes the definition from this list. Products that are listed in the catalog, or are approved for listing, cannot be deleted.</li>
+    </ul>
+    <p>Package definitions that are approved will be listed unless they would replace existing products without permission. Any definitions that are incomplete (missing sku, no associated products, or no categories), will be skipped and marked as unapproved.</p>'
+  ) ?>
+</div>
+

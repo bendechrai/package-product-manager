@@ -23,5 +23,14 @@ class BenDechrai_PackageProductManager_Block_Adminhtml_Import_List extends Mage_
       'onclick'   => 'setLocation(\' '  . Mage::helper("adminhtml")->getUrl('*/*/import') . '\')',
     ));
   }
+
+  public function _toHtml() {
+    $block = $this->getLayout()->createBlock(
+      'Mage_Core_Block_Template',
+      'importHelp',
+      array('template' => 'BenDechrai/PackageProductManager/import/help.phtml')
+    );
+    return $block->toHtml() . parent::_toHtml();
+  }
 }
 
