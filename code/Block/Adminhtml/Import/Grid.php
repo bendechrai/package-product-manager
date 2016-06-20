@@ -155,6 +155,12 @@ class BenDechrai_PackageProductManager_Block_Adminhtml_Import_Grid extends Mage_
       'url'      => $this->getUrl('*/*/massDontReplaceExistingPackages'),
     ));
 
+    $this->getMassactionBlock()->addItem('Use Existing', array(
+      'label'    => Mage::helper('bendechrai_packageproductmanager')->__('Use Existing'),
+      'url'      => $this->getUrl('*/*/massUseExistingPackages'),
+      'confirm'  => Mage::helper('bendechrai_packageproductmanager')->__('If packages you\'ve selected have SKUs used by existing package products, this action maps these together. Any revisions will then happen to these existing package products. Are you sure?')
+    ));
+
     $this->getMassactionBlock()->addItem('Refresh', array(
       'label'    => Mage::helper('bendechrai_packageproductmanager')->__('Refresh'),
       'url'      => $this->getUrl('*/*/massRefreshPackages'),

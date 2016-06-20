@@ -119,6 +119,62 @@ class BenDechrai_PackageProductManager_Package_Product_ManagerController extends
     $this->_redirect('*/*/index');
   }
 
+  public function massUseExistingPackagesAction()
+  {
+    $packageIds = $this->getRequest()->getParam('package_id');
+    $mapped = 0;
+    if(!is_array($packageIds)) {
+      Mage::getSingleton('adminhtml/session')->addError(Mage::helper('bendechrai_packageproductmanager')->__('Please select one or more packages.'));
+    } else {
+      try {
+        $packageModel = Mage::getModel('bendechrai_packageproductmanager/package');
+        foreach($packageIds as $packageId) {
+
+          // Load and save package product defintition, so its metadata are all up to date
+          $packageModel->load($packageId);
+          $packageModel->save();
+
+          // If catalog product exists
+          if($packageModel->getCatalogProductExists()) {
+
+            // Get catalog product
+            $catalogProduct = Mage::GetModel('catalog/product')->load(Mage::GetModel('catalog/product')->getIdBySku($packageModel->getSku()));
+
+            // If catalog product is not already mapped to this package product definition
+            if($catalogProduct->getId() !== $packageModel->getMappedProductId()) {
+
+              // Is the catalog product of type Package Product?
+              if($catalogProduct->getTypeId() === MageRevolution_PackageProductType_Model_Product_Type_Package::TYPE_CODE) {
+
+                // It's a package product. Map to this package product definition
+                $packageModel->setMappedProductId($catalogProduct->getId());
+                $packageModel->save();
+                $mapped++;
+
+              } else {
+                Mage::getSingleton('adminhtml/session')->addError(Mage::helper('bendechrai_packageproductmanager')->__(
+                  '%s: type mismatch, catalog product %d is not a "Package Product"',
+                  $packageModel->getSku(),
+                  $catalogProduct->getId()
+                ));
+              }
+
+            }
+          }
+        }
+        Mage::getSingleton('adminhtml/session')->addSuccess(
+          Mage::helper('bendechrai_packageproductmanager')->__(
+            'Total of %d package(s) were remapped to point to existing catalog products.', $mapped
+          )
+        );
+      } catch (Exception $e) {
+        Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+      }
+    }
+     
+    $this->_redirect('*/*/index');
+  }
+
   public function massDontReplaceExistingPackagesAction()
   {
     $packageIds = $this->getRequest()->getParam('package_id');
