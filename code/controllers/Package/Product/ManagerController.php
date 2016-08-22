@@ -102,9 +102,33 @@ class BenDechrai_PackageProductManager_Package_Product_ManagerController extends
       try {
         $packageModel = Mage::getModel('bendechrai_packageproductmanager/package');
         foreach ($packageIds as $packageId) {
+
+          // Load existing package model
           $packageModel->load($packageId);
-          $packageModel->setReplaceExisting(1);
-          $packageModel->save();
+
+          // Check this product has nothing mapped
+          if(is_null($packageModel->getMappedProductId())) {
+
+            // Load the clashing catalog product
+            $clashingCatalogProduct = Mage::GetModel('catalog/product')->load(Mage::GetModel('catalog/product')->getIdBySku($packageModel->getSku()));
+
+            // If clashing product is a package product
+            if($clashingCatalogProduct->getTypeId() === MageRevolution_PackageProductType_Model_Product_Type_Package::TYPE_CODE) {
+
+              // Map this package model to the clashing product
+              $packageModel->setMappedProductId($clashingCatalogProduct->getId());
+              $packageModel->setCatalogProductExists(0);
+              $packageModel->setReplaceExisting(0);
+
+            } else {
+
+              // Mark this package model as replacing existing
+              $packageModel->setReplaceExisting(1);
+
+            }
+
+            $packageModel->save();
+          }
         }
         Mage::getSingleton('adminhtml/session')->addSuccess(
           Mage::helper('bendechrai_packageproductmanager')->__(
