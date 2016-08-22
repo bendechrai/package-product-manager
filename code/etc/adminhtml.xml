@@ -4,7 +4,7 @@
             <children>
                 <packageproductmanager translate="title" module="bendechrai_packageproductmanager">
                     <title>Package Product Manager</title>
-                    <sort_order>70</sort_order>
+                    <sort_order>18</sort_order>
                     <action>adminhtml/package_product_manager/index</action>
                 </packageproductmanager>
             </children>
