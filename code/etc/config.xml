@@ -75,6 +75,16 @@
                 <class>BenDechrai_PackageProductManager_Helper</class>
             </bendechrai_packageproductmanager>
         </helpers>
+        <events>
+            <advancedstock_order_item_reserved_qty_changed>
+                <observers> 
+                    <bendechrai_packageproductmanager>
+                        <class>BenDechrai_PackageProductManager_Model_Observer</class>
+                        <method>salesQuoteItemQtySetAfter</method>
+                    </bendechrai_packageproductmanager>
+                </observers>
+            </advancedstock_order_item_reserved_qty_changed>
+        </events>
         <blocks>
             <bendechrai_packageproductmanager>
                 <class>BenDechrai_PackageProductManager_Block</class>
