@@ -76,6 +76,14 @@
             </bendechrai_packageproductmanager>
         </helpers>
         <events>
+            <advancedstock_product_aftersave>
+                <observers> 
+                    <bendechrai_packageproductmanager>
+                        <class>BenDechrai_PackageProductManager_Model_Observer</class>
+                        <method>advancedstockProductAftersave</method>
+                    </bendechrai_packageproductmanager>
+                </observers>
+            </advancedstock_product_aftersave>
             <advancedstock_order_item_reserved_qty_changed>
                 <observers> 
                     <bendechrai_packageproductmanager>
