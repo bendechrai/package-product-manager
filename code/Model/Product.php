@@ -7,7 +7,7 @@
  * @author     Ben Dechrai <ben@dechrai.com> https://bendechrai.com.
  */
 
-class BenDechrai_PackageProductManager_Model_Product extends Mage_Core_Model_Abstract 
+class BenDechrai_PackageProductManager_Model_Product extends Mage_Core_Model_Abstract
 {
 
   private $catalogProduct = null;
@@ -25,7 +25,7 @@ class BenDechrai_PackageProductManager_Model_Product extends Mage_Core_Model_Abs
     return $this->catalogProduct;
   }
 
-  public function unsetData() {
+  public function unsetData($key = null) {
     $this->catalogProduct = null;
     return parent::unsetData();
   }

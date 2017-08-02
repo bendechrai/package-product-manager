@@ -20,7 +20,7 @@ class BenDechrai_PackageProductManager_Block_Adminhtml_Import_List extends Mage_
     $this->_removeButton('add');
     $this->addButton('bendechrai_packageproductmanager_import', array(
       'label'     => 'Import',
-      'onclick'   => 'setLocation(\' '  . Mage::helper("adminhtml")->getUrl('*/*/import') . '\')',
+      'onclick'   => 'setLocation(\''  . Mage::helper("adminhtml")->getUrl('*/*/import') . '\')',
     ));
   }
 

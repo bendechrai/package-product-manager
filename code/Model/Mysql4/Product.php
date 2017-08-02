@@ -12,7 +12,7 @@ class BenDechrai_PackageProductManager_Model_Mysql4_Product extends Mage_Core_Mo
 
   protected function _construct()
   {
-    $this->_init('bendechrai_packageproductmanager/product');
+    $this->_init('bendechrai_packageproductmanager/product', 'product_id');
   }   
 
 }

@@ -10,6 +10,11 @@
 class BenDechrai_PackageProductManager_Package_Product_ManagerController extends Mage_Adminhtml_Controller_Action
 {
 
+  protected function _isAllowed()
+  {
+    return true;
+  }
+
   public function indexAction()
   {
     $this->loadLayout()->_setActiveMenu('catalog/packageproductmanager');
@@ -63,7 +68,7 @@ class BenDechrai_PackageProductManager_Package_Product_ManagerController extends
         Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
       }
     }
-     
+
     $this->_redirect('*/*/index');
   }
 
@@ -89,7 +94,7 @@ class BenDechrai_PackageProductManager_Package_Product_ManagerController extends
         Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
       }
     }
-     
+
     $this->_redirect('*/*/index');
   }
 
@@ -139,7 +144,7 @@ class BenDechrai_PackageProductManager_Package_Product_ManagerController extends
         Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
       }
     }
-     
+
     $this->_redirect('*/*/index');
   }
 
@@ -195,7 +200,7 @@ class BenDechrai_PackageProductManager_Package_Product_ManagerController extends
         Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
       }
     }
-     
+
     $this->_redirect('*/*/index');
   }
 
@@ -221,7 +226,7 @@ class BenDechrai_PackageProductManager_Package_Product_ManagerController extends
         Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
       }
     }
-     
+
     $this->_redirect('*/*/index');
   }
 
@@ -246,7 +251,7 @@ class BenDechrai_PackageProductManager_Package_Product_ManagerController extends
         Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
       }
     }
-     
+
     $this->_redirect('*/*/index');
   }
 
@@ -272,7 +277,7 @@ class BenDechrai_PackageProductManager_Package_Product_ManagerController extends
         Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
       }
     }
-     
+
     $this->_redirect('*/*/index');
   }
 
@@ -304,7 +309,7 @@ class BenDechrai_PackageProductManager_Package_Product_ManagerController extends
           }
 
           if($packageModel->delete()) $deletedCount++;
-          
+
         }
 
         if($deletedCount>0) {
@@ -315,7 +320,7 @@ class BenDechrai_PackageProductManager_Package_Product_ManagerController extends
         Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
       }
     }
-     
+
     $this->_redirect('*/*/index');
   }
 
